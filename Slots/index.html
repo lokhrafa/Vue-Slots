@@ -1,0 +1,91 @@
+<!DOCTYPE <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Slots</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+</head>
+<body>
+    <main id="app">
+        <h1>Vue.Js Slots</h1>
+        <card></card>
+        <card>
+            <template slot="phrase"><p>Entrena bastante duro</p></template>
+            <template>
+                <img src="https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/porsche-cayman-gt4-0000.jpg?itok=VV4Sjx64">
+                <template slot="position"><p>Profesor</p></template>
+                <template slot="name"><h1>Jon</h1></template>
+            </template>
+        </card>
+        <card>
+            <template slot="position"><p><i>CEO</i></p></template>
+            <template slot="phrase"><p><b>el dinero no es el objetivo</b></p></template>
+            <template slot="name"><h1>Alvaro</h1></template>
+            <template>
+                <img src="http://t911.wpengine.com/wp-content/uploads/2015/02/Porsche-Cayman-GT4-2.jpg">
+            </template>
+        </card>
+        <cards :members = "team">
+            <template scope = "data">
+                <img :src ="data.avatar">
+            </template>
+            <template slot="name" scope = "data">
+                <h3 v-text = "data.nombre"></h3>
+            </template>
+        </cards>
+        <cards :members = "team">
+            <template scope = "data">
+                <img :src = "data.avatar" style="border-radius: 50%;">
+            </template>
+            <template slot = "name" scope = "data">
+                <h2 v-text = "data.nombre"></h2>
+            </template>
+        </cards>
+    </main>
+    <template id="card">
+        <figure>
+            <slot>
+                <img src="https://st.motortrend.com/uploads/sites/5/2016/06/2017-Porsche-Panamera-Turbo-front-three-quarter-03.jpg">
+            </slot>
+            <figcaption>
+                <slot name="name">OuhTeam</slot>
+                <slot name="position">Comunidad</slot>
+                <slot name="phrase"> Honestidad</slot>
+            </figcaption>
+        </figure>
+    </template>
+    <template id="cards">
+        <div>
+            <figure v-for = "member in members">
+                <slot :avatar = "member.avatar"></slot>
+                <figcaption>
+                    <slot name="name" :nombre = "member.name"></slot>
+                </figcaption>
+            </figure>
+        </div>
+    </template>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+    const mv = new Vue ({
+        el: "#app",
+        data: {
+            team:[{name: 'Lazer', avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRafIz65PGvb621pvpuD75wCkgJMiE9D2YqJwiJvF61VrneARBt'},
+            {name: 'Buggy', avatar: 'https://www.caranddriver.com/images/16q2/667719/2017-nissan-gt-r-nismo-photos-and-info-news-car-and-driver-photo-668537-s-original.jpg'},
+            {name: 'Electro', avatar: 'https://cdn.mpasho.co.ke/wp-content/uploads/2017/02/2017-nissan-gt-r-inline-photo-668765-s-original.jpg'}]
+        },
+        components : {
+            'card': {
+                template: '#card'
+            },
+            'cards': {
+                props: ['members'],
+                template: '#cards'
+            }
+        }
+    })
+    
+    </script>
+</body>
+</html>
